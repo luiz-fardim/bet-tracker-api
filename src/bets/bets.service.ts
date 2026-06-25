@@ -23,7 +23,18 @@ export class BetsService {
       throw new NotFoundException('Bet is missing');
     }
     if (updateBetDto.status == 'won') {
+      const profit = bet.value * bet.odd - bet.value;
+      bet.profit = profit;
+      bet.status = updateBetDto.status;
+      return this.betsRepository.save(bet);
     }
+    if (updateBetDto.status == 'lost') {
+      const profit = -bet.value;
+      bet.profit = profit;
+      bet.status = updateBetDto.status;
+      return this.betsRepository.save(bet);
+    }
+
     const data = Object.assign(bet, updateBetDto);
     return this.betsRepository.save(data);
   }
@@ -40,7 +51,8 @@ export class BetsService {
     return this.betsRepository.find();
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string): Promise<{ message: string}> {
     await this.betsRepository.delete(id);
+    return { message: 'Bet deleted successfully'}
   }
 }

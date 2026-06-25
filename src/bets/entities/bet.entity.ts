@@ -16,6 +16,14 @@ export class Bet {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({
+    nullable: true,
+    type: 'decimal',
+    precision: 10,
+    scale: 2,
+  })
+  profit: number;
+
   @Column()
   homeTeam: string;
 
