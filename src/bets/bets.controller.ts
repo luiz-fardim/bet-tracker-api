@@ -30,6 +30,11 @@ export class BetsController {
     return this.betsService.findAll();
   }
 
+  @Get('summary')
+  calculateTotalProfit() {
+    return this.betsService.calculateTotalProfit()
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.betsService.findOne(id);
