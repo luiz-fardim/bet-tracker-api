@@ -1,26 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBetDto } from './dto/create-bet.dto';
 import { UpdateBetDto } from './dto/update-bet.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Bet } from './entities/bet.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BetsService {
-  create(createBetDto: CreateBetDto) {
-    return 'This action adds a new bet';
+  constructor(
+    @InjectRepository(Bet)
+    private betsRepository: Repository<Bet>,
+  ) {}
+
+  async create(createBetDto: CreateBetDto): Promise<Bet> {
+    const bet = this.betsRepository.create(createBetDto);
+    return this.betsRepository.save(bet);
   }
 
-  findAll() {
-    return `This action returns all bets`;
+  async update(id: string, updateBetDto: UpdateBetDto): Promise<Bet> {
+    const bet = await this.betsRepository.findOneBy({ id });
+    if (!bet) {
+      throw new NotFoundException('Bet is missing');
+    }
+    if (updateBetDto.status == 'won') {
+    }
+    const data = Object.assign(bet, updateBetDto);
+    return this.betsRepository.save(data);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bet`;
+  async findOne(id: string): Promise<Bet> {
+    const bet = await this.betsRepository.findOneBy({ id });
+    if (!bet) {
+      throw new NotFoundException('Bet not found');
+    }
+    return bet;
   }
 
-  update(id: number, updateBetDto: UpdateBetDto) {
-    return `This action updates a #${id} bet`;
+  async findAll(): Promise<Bet[]> {
+    return this.betsRepository.find();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} bet`;
+  async remove(id: string): Promise<void> {
+    await this.betsRepository.delete(id);
   }
 }

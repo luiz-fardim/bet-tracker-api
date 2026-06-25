@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { BetsService } from './bets.service';
 import { CreateBetDto } from './dto/create-bet.dto';
 import { UpdateBetDto } from './dto/update-bet.dto';
@@ -12,6 +20,11 @@ export class BetsController {
     return this.betsService.create(createBetDto);
   }
 
+  @Patch(':id')
+  update(@Body() updateBetDto: UpdateBetDto, @Param('id') id: string) {
+    return this.betsService.update(id, updateBetDto);
+  }
+
   @Get()
   findAll() {
     return this.betsService.findAll();
@@ -19,16 +32,11 @@ export class BetsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.betsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBetDto: UpdateBetDto) {
-    return this.betsService.update(+id, updateBetDto);
+    return this.betsService.findOne(id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.betsService.remove(+id);
+    return this.betsService.remove(id);
   }
 }
