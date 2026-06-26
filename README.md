@@ -1,98 +1,271 @@
+# 🎯 Bet Tracker API
+
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![TypeORM](https://img.shields.io/badge/TypeORM-FE0902?style=for-the-badge)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+<p align="center">
+  API REST para gerenciamento e organização de apostas esportivas desenvolvida com <strong>NestJS</strong>, <strong>TypeORM</strong> e <strong>PostgreSQL</strong>.
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 📸 Preview
 
-## Project setup
+> Adicione aqui um GIF ou screenshot da API no Insomnia/Postman ou do futuro dashboard.
+
+---
+
+# 🚀 Tecnologias
+
+- ⚡ NestJS
+- 🟦 TypeScript
+- 🐘 PostgreSQL
+- 🔗 TypeORM
+- 🐳 Docker & Docker Compose
+- ✅ class-validator
+- 🔒 ValidationPipe Global
+
+---
+
+# 📂 Estrutura do Projeto
+
+```text
+src
+├── bets
+│   ├── dto
+│   ├── entities
+│   ├── bets.controller.ts
+│   ├── bets.service.ts
+│   └── bets.module.ts
+│
+├── app.module.ts
+└── main.ts
+````
+
+---
+
+# ✨ Funcionalidades
+
+* ✅ Cadastro de apostas
+* ✅ Listagem de todas as apostas
+* ✅ Busca por ID
+* ✅ Atualização do resultado da aposta
+* ✅ Remoção de apostas
+* ✅ Cálculo automático de lucro/prejuízo
+* ✅ Resumo do lucro total acumulado
+* ✅ Validação global de dados
+
+---
+
+# 📊 Regras de Negócio
+
+Cada aposta possui:
+
+* Time da casa
+* Time visitante
+* Mercado
+* Odd
+* Valor apostado
+* Status
+
+### Resultado da aposta
+
+| Status    | Resultado                       |
+| --------- | ------------------------------- |
+| `pending` | Aguardando resultado            |
+| `won`     | Lucro = `(odd × valor) - valor` |
+| `lost`    | Prejuízo = `-valor`             |
+
+---
+
+# ⚙️ Como executar
+
+## Pré-requisitos
+
+* Node.js 20+
+* Docker
+* Docker Compose
+
+---
+
+## Clone o projeto
 
 ```bash
-$ npm install
+git clone https://github.com/seu-usuario/bet-tracker.git
+
+cd bet-tracker
 ```
 
-## Compile and run the project
+---
+
+## Instale as dependências
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+---
+
+## Configure as variáveis de ambiente
+
+Crie um arquivo `.env`:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_NAME=bet_tracker
+```
+
+---
+
+## Suba o banco
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+docker compose up -d
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Execute a aplicação
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+A API estará disponível em:
 
-## Resources
+```text
+http://localhost:3000
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# 📡 Endpoints
 
-## Support
+| Método | Endpoint        | Descrição                       |
+| ------ | --------------- | ------------------------------- |
+| POST   | `/bets`         | Criar aposta                    |
+| GET    | `/bets`         | Listar apostas                  |
+| GET    | `/bets/:id`     | Buscar aposta por ID            |
+| PATCH  | `/bets/:id`     | Atualizar resultado             |
+| DELETE | `/bets/:id`     | Remover aposta                  |
+| GET    | `/bets/summary` | Retorna o lucro total acumulado |
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+# 📥 Exemplo de criação
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```http
+POST /bets
+```
 
-## License
+```json
+{
+  "homeTeam": "Flamengo",
+  "visitingTeam": "Corinthians",
+  "market": "Resultado Final",
+  "odd": 2.5,
+  "value": 50
+}
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
+
+# 📤 Exemplo de atualização
+
+```http
+PATCH /bets/:id
+```
+
+```json
+{
+  "status": "won"
+}
+```
+
+---
+
+# 📈 Exemplo de resposta
+
+```json
+{
+  "id": 1,
+  "homeTeam": "Flamengo",
+  "visitingTeam": "Corinthians",
+  "market": "Resultado Final",
+  "odd": 2.5,
+  "value": 50,
+  "status": "won",
+  "profit": 75
+}
+```
+
+---
+
+# 🔮 Roadmap
+
+## 🔐 Autenticação
+
+* [ ] Cadastro de usuários
+* [ ] Hash de senha com bcrypt
+* [ ] Login com JWT
+* [ ] Refresh Token
+* [ ] Logout
+* [ ] OAuth2 (Google)
+
+### 👤 Usuários
+
+* [ ] Suporte a múltiplos usuários
+* [ ] Relação Usuário → Apostas
+
+### 📈 Melhorias
+
+* [ ] Paginação
+* [ ] Filtros por status
+* [ ] Ordenação
+* [ ] Dashboard com estatísticas
+* [ ] Gráficos de lucro
+* [ ] Histórico mensal
+
+### 💻 Front-end
+
+* [ ] Dashboard em React ou Next.js
+* [ ] Login
+* [ ] Cadastro
+* [ ] Perfil
+* [ ] Estatísticas em tempo real
+
+---
+
+# 🧪 Testes
+
+```bash
+npm run test
+```
+
+---
+
+# 📝 Licença
+
+Este projeto está sob a licença **MIT**.
+
+---
+
+# 👨‍💻 Autor
+
+Desenvolvido por **Luiz** durante os estudos de Backend com **NestJS**, **PostgreSQL**, **Docker** e boas práticas de desenvolvimento.
+
+Caso tenha sugestões ou queira contribuir, fique à vontade para abrir uma **Issue** ou enviar um **Pull Request**.
+
+```
+```
