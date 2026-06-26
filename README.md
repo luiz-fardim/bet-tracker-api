@@ -19,7 +19,9 @@
 
 ## 📸 Preview
 
-> Adicione aqui um GIF ou screenshot da API no Insomnia/Postman ou do futuro dashboard.
+<img src="./assets/Captura de tela 2026-06-25 223501.png">
+<img src="./assets/Captura de tela 2026-06-25 223531.png">
+
 
 ---
 
