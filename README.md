@@ -266,6 +266,3 @@ Este projeto está sob a licença **MIT**.
 Desenvolvido por **Luiz** durante os estudos de Backend com **NestJS**, **PostgreSQL**, **Docker** e boas práticas de desenvolvimento.
 
 Caso tenha sugestões ou queira contribuir, fique à vontade para abrir uma **Issue** ou enviar um **Pull Request**.
-
-```
-```
