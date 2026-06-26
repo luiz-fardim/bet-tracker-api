@@ -19,9 +19,7 @@
 
 ## 📸 Preview
 
-<img src="./assets/Captura de tela 2026-06-25 223501.png">
-<img src="./assets/Captura de tela 2026-06-25 223531.png">
-
+<img src="./assets/Captura de tela 2026-06-25 223501.png" width="800">
 
 ---
 
