@@ -3,10 +3,13 @@ import { BetsService } from './bets.service';
 import { BetsController } from './bets.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Bet } from './entities/bet.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Bet])],
-  providers: [BetsService],
+  imports: [
+    TypeOrmModule.forFeature([Bet])
+],
+  providers: [BetsService, JwtService],
   controllers: [BetsController],
 })
 export class BetsModule {}

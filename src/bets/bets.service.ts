@@ -40,8 +40,8 @@ export class BetsService {
   }
 
   async calculateTotalProfit() {
-    const result = await this.betsRepository.sum('profit')
-    return result ?? 0
+    const result = await this.betsRepository.sum('profit');
+    return result ?? 0;
   }
 
   async findOne(id: string): Promise<Bet> {
@@ -56,8 +56,8 @@ export class BetsService {
     return this.betsRepository.find();
   }
 
-  async remove(id: string): Promise<{ message: string}> {
+  async remove(id: string): Promise<{ message: string }> {
     await this.betsRepository.delete(id);
-    return { message: 'Bet deleted successfully'}
+    return { message: 'Bet deleted successfully' };
   }
 }
