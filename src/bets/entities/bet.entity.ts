@@ -1,7 +1,10 @@
+import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -11,7 +14,7 @@ export enum betStatus {
   LOST = 'lost',
 }
 
-@Entity()
+@Entity({ name: 'bets' })
 export class Bet {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -56,4 +59,8 @@ export class Bet {
     default: betStatus.PENDING,
   })
   status: betStatus;
+
+  @ManyToOne(() => User, (user) => user.bets, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'userId' })
+  user: User;
 }

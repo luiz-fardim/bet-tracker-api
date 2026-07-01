@@ -16,7 +16,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
         url: config.get<string>('DATABASE_URL'),
-        synchronize: config.get<string>('NODE_ENV') !== 'production',
+        synchronize: true,
         autoLoadEntities: true,
       }),
     }),

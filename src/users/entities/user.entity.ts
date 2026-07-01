@@ -1,11 +1,13 @@
+import { Bet } from 'src/bets/entities/bet.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -13,7 +15,7 @@ export class User {
   @Column({ length: 100 })
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -24,4 +26,7 @@ export class User {
 
   @Column()
   birth: string;
+
+  @OneToMany(() => Bet, (bet) => bet.user, { cascade: true })
+  bets: Bet[];
 }
