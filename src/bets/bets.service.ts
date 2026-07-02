@@ -11,6 +11,8 @@ export class BetsService {
   constructor(
     @InjectRepository(Bet)
     private betsRepository: Repository<Bet>,
+
+    @InjectRepository(User)
     private usersRepository: Repository<User>
   ) {}
 
