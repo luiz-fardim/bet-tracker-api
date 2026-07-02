@@ -17,6 +17,8 @@ export class BetsService {
   ) {}
 
   async create(createBetDto: CreateBetDto): Promise<Bet> {
+    console.log("passou do service")
+
     const user = await this.usersRepository.findOneByOrFail({
       id: createBetDto.userId
     })

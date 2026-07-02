@@ -1,7 +1,9 @@
 import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
 import { Transform } from 'class-transformer'
+console.log("passou do dto")
 
 export class CreateBetDto {
+
   @IsNumber()
   @Transform(({ value }) => Number(value))
   @IsPositive()
