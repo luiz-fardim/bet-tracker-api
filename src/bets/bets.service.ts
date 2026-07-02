@@ -17,16 +17,17 @@ export class BetsService {
   ) {}
 
   async create(createBetDto: CreateBetDto): Promise<Bet> {
-    console.log("passou do service")
+    const { userId, ...betData } = createBetDto;
 
     const user = await this.usersRepository.findOneByOrFail({
-      id: createBetDto.userId
-    })
+      id: userId,
+    });
 
     const bet = this.betsRepository.create({
-      ...createBetDto,
-      user
+      ...betData,
+      user,
     });
+
     return this.betsRepository.save(bet);
   }
 

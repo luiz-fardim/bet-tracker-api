@@ -21,7 +21,6 @@ export class BetsController {
   @Post()
   create(@Body() createBetDto: CreateBetDto) {
     return this.betsService.create(createBetDto);
-    console.log("passou do controller")
   }
 
   @UseGuards(AuthGuard)
