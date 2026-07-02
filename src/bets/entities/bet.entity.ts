@@ -24,6 +24,7 @@ export class Bet {
     type: 'decimal',
     precision: 10,
     scale: 2,
+    transformer: { to: (v) => v, from: (v) => parseFloat(v)}
   })
   profit: number;
 
