@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBetDto } from './dto/create-bet.dto';
 import { UpdateBetDto } from './dto/update-bet.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Bet } from './entities/bet.entity';
+import { Bet, betStatus } from './entities/bet.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { betResponseDto } from './dto/bet-response.dto';
@@ -75,8 +75,8 @@ export class BetsService {
     return bet;
   }
 
-  async findAll(userId: string): Promise<Bet[]> {
-    return this.betsRepository.find({ where: {user: { id: userId}}});
+  async findAll(userId: string, status?: betStatus): Promise<Bet[]> {
+    return this.betsRepository.find({ where: {user: { id: userId}, ... (status && { status })}});
   }
 
   async remove(id: string): Promise<{ message: string }> {

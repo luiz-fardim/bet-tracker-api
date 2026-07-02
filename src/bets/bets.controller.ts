@@ -8,11 +8,13 @@ import {
   Delete,
   UseGuards,
   Req,
+  Query
 } from '@nestjs/common';
 import { BetsService } from './bets.service';
 import { CreateBetDto } from './dto/create-bet.dto';
 import { UpdateBetDto } from './dto/update-bet.dto';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
+import { betStatus } from './entities/bet.entity';
 
 @Controller('bets')
 export class BetsController {
@@ -32,8 +34,8 @@ export class BetsController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(@Req() req) {
-    return this.betsService.findAll(req.user.id);
+  async findAll(@Req() req, @Query('status') status?: betStatus ) {
+    return await this.betsService.findAll(req.user.id, status);
   }
 
   @UseGuards(AuthGuard)
