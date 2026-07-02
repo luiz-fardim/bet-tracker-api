@@ -15,6 +15,7 @@ import { CreateBetDto } from './dto/create-bet.dto';
 import { UpdateBetDto } from './dto/update-bet.dto';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { betStatus } from './entities/bet.entity';
+import { FindBetDto } from './dto/find-bet.dto';
 
 @Controller('bets')
 export class BetsController {
@@ -34,8 +35,8 @@ export class BetsController {
 
   @UseGuards(AuthGuard)
   @Get()
-  async findAll(@Req() req, @Query('status') status?: betStatus ) {
-    return await this.betsService.findAll(req.user.id, status);
+  async findAll(@Req() req, @Query() query: FindBetDto ) {
+    return await this.betsService.findAll(req.user.id, query.status);
   }
 
   @UseGuards(AuthGuard)
