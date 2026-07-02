@@ -64,7 +64,7 @@ export class BetsService {
 
   async calculateTotalProfit() {
     const result = await this.betsRepository.sum('profit');
-    return result ?? 0;
+    return result?.toFixed(2) ?? 0;
   }
 
   async findOne(id: string): Promise<Bet> {
