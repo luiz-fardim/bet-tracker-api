@@ -21,7 +21,8 @@ export class UsersService {
     );
     registerUserDto.password = hashedPassword;
     const user = this.usersRepository.create(registerUserDto);
-    return this.usersRepository.save(user);
+    const { password, ...result } = await this.usersRepository.save(user);
+    return result as User
   }
 
   async findAll() {

@@ -76,8 +76,8 @@ export class BetsService {
     return bet;
   }
 
-  async findAll(): Promise<Bet[]> {
-    return this.betsRepository.find();
+  async findAll(userId: string): Promise<Bet[]> {
+    return this.betsRepository.find({ where: {user: { id: userId}}});
   }
 
   async remove(id: string): Promise<{ message: string }> {

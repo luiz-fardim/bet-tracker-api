@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { BetsService } from './bets.service';
 import { CreateBetDto } from './dto/create-bet.dto';
@@ -31,8 +32,8 @@ export class BetsController {
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.betsService.findAll();
+  findAll(@Req() req) {
+    return this.betsService.findAll(req.user.id);
   }
 
   @UseGuards(AuthGuard)
