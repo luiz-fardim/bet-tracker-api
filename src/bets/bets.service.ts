@@ -4,16 +4,25 @@ import { UpdateBetDto } from './dto/update-bet.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Bet } from './entities/bet.entity';
 import { Repository } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class BetsService {
   constructor(
     @InjectRepository(Bet)
     private betsRepository: Repository<Bet>,
+    private usersRepository: Repository<User>
   ) {}
 
   async create(createBetDto: CreateBetDto): Promise<Bet> {
-    const bet = this.betsRepository.create(createBetDto);
+    const user = await this.usersRepository.findOneByOrFail({
+      id: createBetDto.userId
+    })
+
+    const bet = this.betsRepository.create({
+      ...createBetDto,
+      user
+    });
     return this.betsRepository.save(bet);
   }
 
