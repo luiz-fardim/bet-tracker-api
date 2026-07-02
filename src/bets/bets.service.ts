@@ -46,7 +46,7 @@ export class BetsService {
       throw new NotFoundException('Bet is missing');
     }
     if (updateBetDto.status == 'won') {
-      const profit: number = bet.value * bet.odd - bet.value;
+      const profit = parseFloat((bet.value * bet.odd - bet.value).toFixed(2))
       bet.profit = profit;
       bet.status = updateBetDto.status;
       return this.betsRepository.save(bet);
