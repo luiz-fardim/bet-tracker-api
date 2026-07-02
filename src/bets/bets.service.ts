@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Bet } from './entities/bet.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
+import { betResponseDto } from './dto/bet-response.dto';
 
 @Injectable()
 export class BetsService {
@@ -16,7 +17,7 @@ export class BetsService {
     private usersRepository: Repository<User>
   ) {}
 
-  async create(createBetDto: CreateBetDto): Promise<Bet> {
+  async create(createBetDto: CreateBetDto): Promise<betResponseDto> {
     const { userId, ...betData } = createBetDto;
 
     const user = await this.usersRepository.findOneByOrFail({
@@ -28,7 +29,15 @@ export class BetsService {
       user,
     });
 
-    return this.betsRepository.save(bet);
+    const saved = await this.betsRepository.save(bet);
+
+    return {
+      odd: saved.odd,
+      homeTeam: saved.homeTeam,
+      visitingTeam: saved.visitingTeam,
+      value: saved.value,
+      market: saved.market
+    }
   }
 
   async update(id: string, updateBetDto: UpdateBetDto): Promise<Bet> {
