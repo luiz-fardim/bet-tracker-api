@@ -26,7 +26,6 @@ export class AuthService {
         {
           email: payload.email,
           id: payload.id,
-          role: payload.role,
         },
         {
           secret: process.env.JWT_SECRET,

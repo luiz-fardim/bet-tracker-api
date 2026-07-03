@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional } from 'class-validator';
-import { betStatus } from '../entities/bet.entity';
+import { betStatus } from 'src/enum/betStatus.enum';
 
 export class FindBetDto {
   @IsOptional()

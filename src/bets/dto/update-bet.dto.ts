@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { betStatus } from '../entities/bet.entity';
+import { betStatus } from 'src/enum/betStatus.enum';
 
 export class UpdateBetDto {
   @IsNumber()
