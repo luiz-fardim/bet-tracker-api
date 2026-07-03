@@ -1,3 +1,4 @@
+import { betStatus } from 'src/enum/betStatus.enum';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
