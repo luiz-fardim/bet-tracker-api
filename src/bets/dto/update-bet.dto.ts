@@ -4,7 +4,7 @@ import { betStatus } from '../entities/bet.entity';
 
 export class UpdateBetDto {
   @IsNumber()
-  @Transform(({ value }) => Number(value) )
+  @Transform(({ value }) => Number(value))
   @IsPositive()
   odd: number;
 
@@ -17,7 +17,7 @@ export class UpdateBetDto {
   visitingTeam: string;
 
   @IsNumber()
-  @Transform(({ value }) => Number(value) )
+  @Transform(({ value }) => Number(value))
   @IsPositive()
   value: number;
 

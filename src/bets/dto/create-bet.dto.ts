@@ -1,8 +1,7 @@
 import { IsNotEmpty, IsNumber, IsPositive, IsString } from 'class-validator';
-import { Transform } from 'class-transformer'
+import { Transform } from 'class-transformer';
 
 export class CreateBetDto {
-
   @IsNumber()
   @Transform(({ value }) => Number(value))
   @IsPositive()
@@ -25,5 +24,5 @@ export class CreateBetDto {
   @IsNotEmpty({ message: 'Market is required' })
   market: string;
 
-  userId: string
+  userId: string;
 }

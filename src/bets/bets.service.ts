@@ -2,10 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBetDto } from './dto/create-bet.dto';
 import { UpdateBetDto } from './dto/update-bet.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Bet, betStatus } from './entities/bet.entity';
+import { Bet } from './entities/bet.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { betResponseDto } from './dto/bet-response.dto';
+import { betStatus } from 'src/enum/betStatus.enum';
 
 @Injectable()
 export class BetsService {
@@ -14,7 +15,7 @@ export class BetsService {
     private betsRepository: Repository<Bet>,
 
     @InjectRepository(User)
-    private usersRepository: Repository<User>
+    private usersRepository: Repository<User>,
   ) {}
 
   async create(createBetDto: CreateBetDto): Promise<betResponseDto> {
@@ -36,8 +37,8 @@ export class BetsService {
       homeTeam: saved.homeTeam,
       visitingTeam: saved.visitingTeam,
       value: saved.value,
-      market: saved.market
-    }
+      market: saved.market,
+    };
   }
 
   async update(id: string, updateBetDto: UpdateBetDto): Promise<Bet> {
@@ -46,7 +47,7 @@ export class BetsService {
       throw new NotFoundException('Bet is missing');
     }
     if (updateBetDto.status == 'won') {
-      const profit = parseFloat((bet.value * bet.odd - bet.value).toFixed(2))
+      const profit = parseFloat((bet.value * bet.odd - bet.value).toFixed(2));
       bet.profit = profit;
       bet.status = updateBetDto.status;
       return this.betsRepository.save(bet);
@@ -75,8 +76,17 @@ export class BetsService {
     return bet;
   }
 
-  async findAll(userId: string, status?: betStatus): Promise<Bet[]> {
-    return this.betsRepository.find({ where: {user: { id: userId}, ... (status && { status })}});
+  async findAll(
+    userId: string,
+    limit: number = 10,
+    page: number = 1,
+    status?: betStatus,
+  ): Promise<Bet[]> {
+    return this.betsRepository.find({
+      where: { user: { id: userId }, ...(status && { status }) },
+      take: limit,
+      skip: (page - 1) * limit,
+    });
   }
 
   async remove(id: string): Promise<{ message: string }> {

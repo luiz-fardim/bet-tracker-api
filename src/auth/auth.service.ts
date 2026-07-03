@@ -22,10 +22,12 @@ export class AuthService {
   }
   async generateToken(payload: User) {
     return {
-      access_token: this.jwtService.sign({ 
+      access_token: this.jwtService.sign(
+        {
           email: payload.email,
-          id: payload.id
-         },
+          id: payload.id,
+          role: payload.role,
+        },
         {
           secret: process.env.JWT_SECRET,
           expiresIn: '1d',

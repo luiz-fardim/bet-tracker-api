@@ -8,14 +8,14 @@ import {
   Delete,
   UseGuards,
   Req,
-  Query
+  Query,
 } from '@nestjs/common';
 import { BetsService } from './bets.service';
 import { CreateBetDto } from './dto/create-bet.dto';
 import { UpdateBetDto } from './dto/update-bet.dto';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
-import { betStatus } from './entities/bet.entity';
 import { FindBetDto } from './dto/find-bet.dto';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Controller('bets')
 export class BetsController {
@@ -35,14 +35,19 @@ export class BetsController {
 
   @UseGuards(AuthGuard)
   @Get()
-  async findAll(@Req() req, @Query() query: FindBetDto ) {
-    return await this.betsService.findAll(req.user.id, query.status);
+  async findAll(@Req() req, @Query() query: FindBetDto & PaginationDto) {
+    return await this.betsService.findAll(
+      req.user.id,
+      query.limit,
+      query.page,
+      query.status,
+    );
   }
 
   @UseGuards(AuthGuard)
   @Get('summary')
   async calculateTotalProfit() {
-    return `You profit now is R$ ${await this.betsService.calculateTotalProfit()}`
+    return `You profit now is R$ ${await this.betsService.calculateTotalProfit()}`;
   }
 
   @UseGuards(AuthGuard)

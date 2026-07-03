@@ -1,4 +1,5 @@
 import { Bet } from 'src/bets/entities/bet.entity';
+import { Role } from 'src/enum/role.enum';
 import {
   Column,
   CreateDateColumn,
@@ -29,4 +30,11 @@ export class User {
 
   @OneToMany(() => Bet, (bet) => bet.user, { cascade: true })
   bets: Bet[];
+
+  @Column({
+    type: 'enum',
+    default: roleEnum.USER,
+    enum: roleEnum,
+  })
+  role: Role;
 }

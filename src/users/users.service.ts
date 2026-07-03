@@ -22,7 +22,7 @@ export class UsersService {
     registerUserDto.password = hashedPassword;
     const user = this.usersRepository.create(registerUserDto);
     const { password, ...result } = await this.usersRepository.save(user);
-    return result as User
+    return result as User;
   }
 
   async findAll() {
