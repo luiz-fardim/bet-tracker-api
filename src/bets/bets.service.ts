@@ -68,8 +68,8 @@ export class BetsService {
     return result?.toFixed(2) ?? 0;
   }
 
-  async findOne(id: string): Promise<Bet> {
-    const bet = await this.betsRepository.findOneBy({ id });
+  async findOne(id: string, userId: string): Promise<Bet> {
+    const bet = await this.betsRepository.findOneBy({ id, user: {id: userId} });
     if (!bet) {
       throw new NotFoundException('Bet not found');
     }
