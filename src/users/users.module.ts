@@ -5,11 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/guards/authorization/roles.guard';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   controllers: [UsersController],
   providers: [
     UsersService,
+    JwtService,
     {
       provide: APP_GUARD,
       useClass: RolesGuard
