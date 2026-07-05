@@ -89,7 +89,11 @@ export class BetsService {
     });
   }
 
-  async remove(id: string): Promise<{ message: string }> {
+  async remove(id: string, userId: string): Promise<{ message: string }> {
+    const bet = await this.betsRepository.findOneBy({ id, user: {id: userId} });
+    if (!bet) {
+      throw new NotFoundException('Bet not found');
+    }
     await this.betsRepository.delete(id);
     return { message: 'Bet deleted successfully' };
   }

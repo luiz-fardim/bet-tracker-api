@@ -29,8 +29,8 @@ export class BetsController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Body() updateBetDto: UpdateBetDto, @Param('id') id: string) {
-    return this.betsService.update(id, updateBetDto);
+  update(@Body() updateBetDto: UpdateBetDto, @Param('id') id: string, @Req() req) {
+    return this.betsService.update(id, req.user.id, updateBetDto);
   }
 
   @UseGuards(AuthGuard)
@@ -52,13 +52,13 @@ export class BetsController {
 
   @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.betsService.findOne(id);
+  findOne(@Param('id') id: string, @Req() req) {
+    return this.betsService.findOne(id, req.user.id);
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.betsService.remove(id);
+  remove(@Param('id') id: string, @Req() req) {
+    return this.betsService.remove(id, req.user.id);
   }
 }
