@@ -41,8 +41,15 @@ export class BetsService {
     };
   }
 
-  async update(id: string, userId: string, updateBetDto: UpdateBetDto): Promise<Bet> {
-    const bet = await this.betsRepository.findOneBy({ id, user: { id: userId} });
+  async update(
+    id: string,
+    userId: string,
+    updateBetDto: UpdateBetDto,
+  ): Promise<Bet> {
+    const bet = await this.betsRepository.findOneBy({
+      id,
+      user: { id: userId },
+    });
     if (!bet) {
       throw new NotFoundException('Bet is missing');
     }
@@ -69,7 +76,10 @@ export class BetsService {
   }
 
   async findOne(id: string, userId: string): Promise<Bet> {
-    const bet = await this.betsRepository.findOneBy({ id, user: {id: userId} });
+    const bet = await this.betsRepository.findOneBy({
+      id,
+      user: { id: userId },
+    });
     if (!bet) {
       throw new NotFoundException('Bet not found');
     }
@@ -90,7 +100,10 @@ export class BetsService {
   }
 
   async remove(id: string, userId: string): Promise<{ message: string }> {
-    const bet = await this.betsRepository.findOneBy({ id, user: {id: userId} });
+    const bet = await this.betsRepository.findOneBy({
+      id,
+      user: { id: userId },
+    });
     if (!bet) {
       throw new NotFoundException('Bet not found');
     }

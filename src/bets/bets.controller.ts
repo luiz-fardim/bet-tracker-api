@@ -29,7 +29,11 @@ export class BetsController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Body() updateBetDto: UpdateBetDto, @Param('id') id: string, @Req() req) {
+  update(
+    @Body() updateBetDto: UpdateBetDto,
+    @Param('id') id: string,
+    @Req() req,
+  ) {
     return this.betsService.update(id, req.user.id, updateBetDto);
   }
 

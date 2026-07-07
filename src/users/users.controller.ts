@@ -26,7 +26,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.Admin )
+  @Roles(Role.Admin)
   @Get()
   findAll() {
     return this.usersService.findAll();
@@ -43,9 +43,9 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(Role.Admin )
+  @Roles(Role.Admin)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.usersService.remove(id);  
+    return this.usersService.remove(id);
   }
 }

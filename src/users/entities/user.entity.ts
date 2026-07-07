@@ -31,11 +31,10 @@ export class User {
   @Column({
     type: 'enum',
     enum: Role,
-    default: Role.User
+    default: Role.User,
   })
-  role: Role
+  role: Role;
 
   @OneToMany(() => Bet, (bet) => bet.user, { cascade: true })
   bets: Bet[];
 }
-
