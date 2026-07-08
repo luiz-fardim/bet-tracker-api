@@ -8,6 +8,7 @@
 ![TypeORM](https://img.shields.io/badge/TypeORM-FE0902?style=for-the-badge)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 </p>
@@ -46,6 +47,8 @@ O que começou como uma ferramenta simples está crescendo pra virar um produto 
 - 🐳 Docker & Docker Compose
 - ✅ class-validator
 - 🔒 ValidationPipe Global
+- 🛡️ RBAC — Role Based Access Control
+- 📄 Swagger — Documentação interativa
 
 ---
 
@@ -68,14 +71,21 @@ src
 │   └── bets.module.ts
 │
 ├── guards
-│   └── auth
-│       └── auth.guard.ts
+│   ├── auth
+│   │   └── auth.guard.ts
+│   └── authorization
+│       ├── roles.decorator.ts
+│       └── roles.guard.ts
 │
 ├── users
 │   ├── dto
 │   ├── entities
 │   ├── users.controller.ts
 │   └── users.service.ts
+│
+├── enum
+│   ├── betStatus.enum.ts
+│   └── role.enum.ts
 │
 ├── app.module.ts
 └── main.ts
@@ -86,20 +96,26 @@ src
 ## ✨ Funcionalidades
 
 ### 🔐 Autenticação & Usuários
-- ✅ Cadastro de usuários
+- ✅ Cadastro de usuários com hash de senha (bcrypt)
 - ✅ Login com JWT
 - ✅ Proteção de rotas com Guards
-- ✅ Relação usuário → apostas
+- ✅ RBAC — controle de acesso por roles (admin/user)
+- ✅ Relação usuário → apostas (cada usuário vê só as próprias apostas)
 
 ### 🎲 Apostas
 - ✅ Cadastro de apostas
-- ✅ Listagem de todas as apostas
+- ✅ Listagem paginada das apostas do usuário autenticado
+- ✅ Filtro por status (pending, won, lost)
 - ✅ Busca por ID
 - ✅ Atualização do resultado da aposta
 - ✅ Remoção de apostas
 - ✅ Cálculo automático de lucro/prejuízo
 - ✅ Resumo do lucro total acumulado
 - ✅ Validação global de dados
+
+### 📄 Documentação
+- ✅ Swagger com autenticação Bearer
+- ✅ DTOs documentados com exemplos
 
 ---
 
@@ -122,7 +138,22 @@ Cada aposta possui:
 | `won`     | Lucro = `(odd × valor) - valor`  |
 | `lost`    | Prejuízo = `-valor`              |
 
+### Roles de usuário
+
+| Role    | Permissões                          |
+| ------- | ------------------------------------ |
+| `user`  | CRUD nas próprias apostas            |
+| `admin` | Acesso a recursos administrativos    |
+
 ---
+
+## 🌐 Deploy
+
+A API está disponível em produção:
+https://bet-tracker-api-ynry.onrender.com/
+
+Documentação Swagger:
+https://bet-tracker-api-ynry.onrender.com/api
 
 ## ⚙️ Como executar
 
@@ -173,8 +204,14 @@ npm run start:dev
 
 A API estará disponível em:
 
-```text
+```
 http://localhost:3000
+```
+
+A documentação Swagger estará em:
+
+```
+http://localhost:3000/api
 ```
 
 ---
@@ -183,21 +220,30 @@ http://localhost:3000
 
 ### Autenticação
 
-| Método | Endpoint      | Descrição                |
-| ------ | ------------- | -------------------------- |
-| POST   | `/auth/register` | Criar conta de usuário  |
-| POST   | `/auth/login`     | Login e geração de token |
+| Método | Endpoint          | Descrição                 |
+| ------ | ----------------- | -------------------------- |
+| POST   | `/auth/register`  | Criar conta de usuário    |
+| POST   | `/auth/login`     | Login e geração de token  |
 
-### Apostas
+### Apostas — requer autenticação
 
-| Método | Endpoint        | Descrição                       |
-| ------ | --------------- | -------------------------------- |
-| POST   | `/bets`         | Criar aposta                     |
-| GET    | `/bets`         | Listar apostas                   |
-| GET    | `/bets/:id`     | Buscar aposta por ID             |
-| PATCH  | `/bets/:id`     | Atualizar resultado              |
-| DELETE | `/bets/:id`     | Remover aposta                   |
-| GET    | `/bets/summary` | Retorna o lucro total acumulado  |
+| Método | Endpoint        | Descrição                                        |
+| ------ | --------------- | ------------------------------------------------- |
+| POST   | `/bets`         | Criar aposta                                      |
+| GET    | `/bets`         | Listar apostas com paginação e filtro por status  |
+| GET    | `/bets/summary` | Retorna o lucro total acumulado                   |
+| GET    | `/bets/:id`     | Buscar aposta por ID                              |
+| PATCH  | `/bets/:id`     | Atualizar resultado da aposta                     |
+| DELETE | `/bets/:id`     | Remover aposta                                    |
+
+### Usuários — requer autenticação
+
+| Método | Endpoint       | Descrição                          |
+| ------ | -------------- | ----------------------------------- |
+| GET    | `/users`       | Listar usuários (somente admin)     |
+| GET    | `/users/:id`   | Buscar usuário por ID               |
+| PATCH  | `/users/:id`   | Atualizar usuário                   |
+| DELETE | `/users/:id`   | Remover usuário (somente admin)     |
 
 ---
 
@@ -205,6 +251,7 @@ http://localhost:3000
 
 ```http
 POST /bets
+Authorization: Bearer <token>
 ```
 
 ```json
@@ -221,6 +268,7 @@ POST /bets
 
 ```http
 PATCH /bets/:id
+Authorization: Bearer <token>
 ```
 
 ```json
@@ -233,14 +281,15 @@ PATCH /bets/:id
 
 ```json
 {
-  "id": 1,
+  "id": "221cf8df-8584-4c45-a09e-214e7d684d61",
   "homeTeam": "Flamengo",
   "visitingTeam": "Corinthians",
   "market": "Resultado Final",
   "odd": 2.5,
   "value": 50,
   "status": "won",
-  "profit": 75
+  "profit": 75.00,
+  "createdAt": "2026-06-25T22:35:01.533Z"
 }
 ```
 
@@ -252,11 +301,19 @@ PATCH /bets/:id
 - [ ] Refresh Token
 - [ ] Logout
 - [ ] OAuth2 (Google)
-- [ ] Paginação
-- [ ] Filtros por status
-- [ ] Ordenação
+- [ ] Rate limiting nas rotas de autenticação
+- [ ] Logs com Winston ou Pino
+- [ ] Testes unitários
 - [ ] Estatísticas avançadas (ROI, sequência de vitórias, etc.)
 - [ ] Histórico mensal
+- [ ] Export CSV e PDF
+
+### 🔗 Integrações
+- [ ] API-Football — times, competições e resultados em tempo real
+- [ ] Atualização automática do resultado quando o jogo terminar
+- [ ] BullMQ + Redis — filas para notificações e relatórios
+- [ ] Telegram Bot — notificar quando aposta for ganha ou perdida
+- [ ] Nodemailer — resumo semanal por email
 
 ### 💻 Front-end
 - [ ] Dashboard em React ou Next.js
@@ -265,10 +322,9 @@ PATCH /bets/:id
 - [ ] Gráficos de lucro/prejuízo
 - [ ] Estatísticas em tempo real
 
-### 📱 Futuro
-- [ ] Versão mobile
-- [ ] Notificações de resultado
-- [ ] Exportar relatórios (PDF/Excel)
+### 🏗️ Infraestrutura
+- [ ] Deploy no Railway ou VPS com Docker
+- [ ] CI/CD com GitHub Actions
 
 ---
 
