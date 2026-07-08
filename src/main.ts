@@ -15,6 +15,7 @@ async function bootstrap() {
     .setDescription(
       'A REST API for managing, recording, and analyzing sports bets. Register your bets, track results, and monitor your profit/loss automatically.  ',
     )
+    .addBearerAuth()
     .setVersion('1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
