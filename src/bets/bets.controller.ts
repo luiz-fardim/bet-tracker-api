@@ -23,8 +23,8 @@ export class BetsController {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createBetDto: CreateBetDto) {
-    return this.betsService.create(createBetDto);
+  create(@Body() createBetDto: CreateBetDto, @Req() req) {
+    return this.betsService.create(createBetDto, req.user.id);
   }
 
   @UseGuards(AuthGuard)

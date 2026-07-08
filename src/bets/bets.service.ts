@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Bet } from './entities/bet.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
-import { betResponseDto } from './dto/bet-response.dto';
+import { BetResponseDto } from './dto/bet-response.dto';
 import { betStatus } from 'src/enum/betStatus.enum';
 
 @Injectable()
@@ -18,8 +18,8 @@ export class BetsService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async create(createBetDto: CreateBetDto): Promise<betResponseDto> {
-    const { userId, ...betData } = createBetDto;
+  async create(createBetDto: CreateBetDto, userId: string): Promise<BetResponseDto> {
+    const {...betData } = createBetDto;
 
     const user = await this.usersRepository.findOneByOrFail({
       id: userId,
@@ -38,6 +38,10 @@ export class BetsService {
       visitingTeam: saved.visitingTeam,
       value: saved.value,
       market: saved.market,
+      status: saved.status,
+      createdAt: saved.createdAt,
+      id: saved.id,
+      profit: saved.profit
     };
   }
 

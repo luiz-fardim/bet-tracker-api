@@ -3,10 +3,18 @@ import { IsOptional } from 'class-validator';
 
 export class PaginationDto {
   @IsOptional()
-  @ApiProperty()
+  @ApiProperty({ 
+  description: 'Number of items per page', 
+  required: false,
+  example: 10
+})
   limit: number;
 
   @IsOptional()
-  @ApiProperty()
+  @ApiProperty({ 
+  description: 'Page number', 
+  required: false,
+  example: 1
+})
   page: number;
 }

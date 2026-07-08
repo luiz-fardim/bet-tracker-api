@@ -7,31 +7,35 @@ export class UpdateBetDto {
   @IsNumber()
   @Transform(({ value }) => Number(value))
   @IsPositive()
-  @ApiProperty()
+  @ApiProperty({ description: 'Odd value for the bet' })
   odd: number;
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ description: 'Name of the home team' })
   homeTeam: string;
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ description: 'Name of the visiting team' })
   visitingTeam: string;
 
   @IsNumber()
   @Transform(({ value }) => Number(value))
-  @IsPositive()
+  @ApiProperty({ description: 'Amount wagered on the bet' })
   @ApiProperty()
   value: number;
 
   @IsString()
-  @ApiProperty()
+  @ApiProperty({ description: 'Betting market (e.g. Result, Goals, Corners)' })
   @IsNotEmpty({ message: 'Market is required' })
   market: string;
 
   @IsString()
-  @ApiProperty()
+  @ApiProperty({ 
+  description: 'Filter bets by status', 
+  enum: betStatus,
+  required: false 
+})
   status: betStatus;
 }

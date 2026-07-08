@@ -6,30 +6,28 @@ export class CreateBetDto {
   @IsNumber()
   @Transform(({ value }) => Number(value))
   @IsPositive()
-  @ApiProperty()
+  @ApiProperty({ description: 'Odd value for the bet' })
   odd: number;
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ description: 'Name of the home team' })
   homeTeam: string;
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ description: 'Name of the visiting team' })
   visitingTeam: string;
 
   @IsNumber()
   @Transform(({ value }) => Number(value))
   @IsPositive()
-  @ApiProperty()
+  @ApiProperty({ description: 'Amount wagered on the bet' })
   value: number;
 
   @IsString()
-  @ApiProperty()
+  
   @IsNotEmpty({ message: 'Market is required' })
+  @ApiProperty({ description: 'Betting market (e.g. Result, Goals, Corners)' })
   market: string;
-
-  @ApiProperty()
-  userId: string;
 }
