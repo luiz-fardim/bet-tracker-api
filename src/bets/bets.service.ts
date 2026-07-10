@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBetDto } from './dto/create-bet.dto';
 import { UpdateBetDto } from './dto/update-bet.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { BetResponseDto } from './dto/bet-response.dto';
 import { betStatus } from 'src/enum/betStatus.enum';
-
+import { validate } from 'uuid'
 @Injectable()
 export class BetsService {
   constructor(
@@ -19,6 +19,7 @@ export class BetsService {
   ) {}
 
   async create(createBetDto: CreateBetDto, userId: string): Promise<BetResponseDto> {
+
     const {...betData } = createBetDto;
 
     const user = await this.usersRepository.findOneByOrFail({
