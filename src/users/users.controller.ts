@@ -18,7 +18,6 @@ import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserResponseDto } from './dto/user-response.dto';
 
-@ApiBearerAuth()
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
@@ -35,6 +34,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Return a user list' })
   @ApiResponse({ status: 200, description: 'User list returned successfully', type: [UserResponseDto] })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiBearerAuth()
   @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.Admin)
   @Get()
@@ -42,6 +42,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Return a specific user' })
   @ApiResponse({ status: 200, description: 'User returned successfully', type: UserResponseDto })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
@@ -50,6 +51,7 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Update a user' })
   @ApiResponse({ status: 200, description: 'User updated successfully', type: UserResponseDto })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
@@ -58,6 +60,7 @@ export class UsersController {
     return this.usersService.update(id, updateUserDto);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete a user' })
   @ApiResponse({ status: 200, description: 'User deleted successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
