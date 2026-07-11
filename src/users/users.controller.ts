@@ -15,7 +15,12 @@ import { Roles } from 'src/guards/authorization/roles.decorator';
 import { Role } from 'src/enum/role.enum';
 import { RolesGuard } from 'src/guards/authorization/roles.guard';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UserResponseDto } from './dto/user-response.dto';
 
 @ApiTags('users')
@@ -24,7 +29,11 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @ApiOperation({ summary: 'Create a new user' })
-  @ApiResponse({ status: 201, description: 'User created successfully', type: UserResponseDto })
+  @ApiResponse({
+    status: 201,
+    description: 'User created successfully',
+    type: UserResponseDto,
+  })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @Post()
   create(@Body() registerUserDto: RegisterUserDto) {
@@ -32,7 +41,11 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Return a user list' })
-  @ApiResponse({ status: 200, description: 'User list returned successfully', type: [UserResponseDto] })
+  @ApiResponse({
+    status: 200,
+    description: 'User list returned successfully',
+    type: [UserResponseDto],
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiBearerAuth()
   @UseGuards(AuthGuard, RolesGuard)
@@ -44,7 +57,11 @@ export class UsersController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Return a specific user' })
-  @ApiResponse({ status: 200, description: 'User returned successfully', type: UserResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'User returned successfully',
+    type: UserResponseDto,
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -53,7 +70,11 @@ export class UsersController {
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update a user' })
-  @ApiResponse({ status: 200, description: 'User updated successfully', type: UserResponseDto })
+  @ApiResponse({
+    status: 200,
+    description: 'User updated successfully',
+    type: UserResponseDto,
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {

@@ -16,17 +16,26 @@ import { UpdateBetDto } from './dto/update-bet.dto';
 import { AuthGuard } from 'src/guards/auth/auth.guard';
 import { FindBetDto } from './dto/find-bet.dto';
 import { PaginationDto } from './dto/pagination.dto';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { BetResponseDto } from './dto/bet-response.dto';
 
 @ApiBearerAuth()
 @ApiTags('bets')
 @Controller('bets')
 export class BetsController {
-  constructor(private readonly betsService: BetsService) { }
+  constructor(private readonly betsService: BetsService) {}
 
   @ApiOperation({ summary: 'Create a new bet' })
-  @ApiResponse({ status: 201, description: 'Bet created successfully', type: BetResponseDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Bet created successfully',
+    type: BetResponseDto,
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @UseGuards(AuthGuard)
   @Post()
@@ -34,8 +43,12 @@ export class BetsController {
     return this.betsService.create(createBetDto, req.user.id);
   }
 
-  @ApiOperation({ summary: 'Update a bet'})
-  @ApiResponse({ status: 200, description: 'Bet updated successfully', type: BetResponseDto })
+  @ApiOperation({ summary: 'Update a bet' })
+  @ApiResponse({
+    status: 200,
+    description: 'Bet updated successfully',
+    type: BetResponseDto,
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @UseGuards(AuthGuard)
   @Patch(':id')
@@ -47,8 +60,12 @@ export class BetsController {
     return this.betsService.update(id, req.user.id, updateBetDto);
   }
 
-  @ApiOperation({ summary: 'Returned a bet list'})
-  @ApiResponse({ status: 200, description: 'Bet list returned successfully', type: PaginationDto })
+  @ApiOperation({ summary: 'Returned a bet list' })
+  @ApiResponse({
+    status: 200,
+    description: 'Bet list returned successfully',
+    type: PaginationDto,
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @UseGuards(AuthGuard)
   @Get()
@@ -61,7 +78,7 @@ export class BetsController {
     );
   }
 
-  @ApiOperation({ summary: 'Get total profit'})
+  @ApiOperation({ summary: 'Get total profit' })
   @ApiResponse({ status: 200, description: 'Profit returned successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @UseGuards(AuthGuard)
@@ -70,8 +87,12 @@ export class BetsController {
     return `You profit now is R$ ${await this.betsService.calculateTotalProfit()}`;
   }
 
-  @ApiOperation({ summary: 'Return a specific bet'})
-  @ApiResponse({ status: 200, description: 'Bet returned successfully', type: BetResponseDto })
+  @ApiOperation({ summary: 'Return a specific bet' })
+  @ApiResponse({
+    status: 200,
+    description: 'Bet returned successfully',
+    type: BetResponseDto,
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @UseGuards(AuthGuard)
   @Get(':id')
@@ -79,7 +100,7 @@ export class BetsController {
     return this.betsService.findOne(id, req.user.id);
   }
 
-  @ApiOperation({ summary: 'Delete a bet'})
+  @ApiOperation({ summary: 'Delete a bet' })
   @ApiResponse({ status: 200, description: 'Bet deleted successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @UseGuards(AuthGuard)

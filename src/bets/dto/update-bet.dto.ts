@@ -32,10 +32,10 @@ export class UpdateBetDto {
   market: string;
 
   @IsString()
-  @ApiProperty({ 
-  description: 'Filter bets by status', 
-  enum: betStatus,
-  required: false 
-})
+  @ApiProperty({
+    description: 'Filter bets by status',
+    enum: betStatus,
+    required: false,
+  })
   status: betStatus;
 }

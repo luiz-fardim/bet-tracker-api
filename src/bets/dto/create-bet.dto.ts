@@ -26,7 +26,6 @@ export class CreateBetDto {
   value: number;
 
   @IsString()
-  
   @IsNotEmpty({ message: 'Market is required' })
   @ApiProperty({ description: 'Betting market (e.g. Result, Goals, Corners)' })
   market: string;
