@@ -170,18 +170,18 @@ describe('UsersService', () => {
       mockUsersRepository.findOneBy.mockResolvedValue(mockUser);
       mockUsersRepository.save.mockResolvedValue(updatedUser);
 
-      await expect(service.update(id, { name: 'Luiz Updated' })).resolves.toEqual(
-        updatedUser,
-      );
+      await expect(
+        service.update(id, { name: 'Luiz Updated' }),
+      ).resolves.toEqual(updatedUser);
       expect(mockUsersRepository.save).toHaveBeenCalled();
     });
 
     it('should throw NotFoundException when user does not exist', async () => {
       mockUsersRepository.findOneBy.mockResolvedValue(null);
 
-      await expect(service.update('missing-id', { name: 'Luiz Updated' })).rejects.toThrow(
-        'User is missing',
-      );
+      await expect(
+        service.update('missing-id', { name: 'Luiz Updated' }),
+      ).rejects.toThrow('User is missing');
       expect(mockUsersRepository.save).not.toHaveBeenCalled();
     });
   });

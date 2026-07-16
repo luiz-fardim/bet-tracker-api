@@ -125,7 +125,11 @@ describe('BetsService', () => {
       mockBetsRepository.findOneBy.mockResolvedValue(existingBet);
       mockBetsRepository.save.mockResolvedValue(updatedBet);
 
-      const result = await service.update(existingBet.id, mockUser.id, updateBetDto);
+      const result = await service.update(
+        existingBet.id,
+        mockUser.id,
+        updateBetDto,
+      );
 
       expect(result.profit).toBe(150);
       expect(result.status).toBe(betStatus.WON);
@@ -135,12 +139,20 @@ describe('BetsService', () => {
     it('should set negative profit when bet is lost', async () => {
       const updateBetDto: UpdateBetDto = { status: betStatus.LOST };
       const existingBet = { ...mockBet, value: 100, odd: 2.5, profit: 0 };
-      const updatedBet = { ...existingBet, status: betStatus.LOST, profit: -100 };
+      const updatedBet = {
+        ...existingBet,
+        status: betStatus.LOST,
+        profit: -100,
+      };
 
       mockBetsRepository.findOneBy.mockResolvedValue(existingBet);
       mockBetsRepository.save.mockResolvedValue(updatedBet);
 
-      const result = await service.update(existingBet.id, mockUser.id, updateBetDto);
+      const result = await service.update(
+        existingBet.id,
+        mockUser.id,
+        updateBetDto,
+      );
 
       expect(result.profit).toBe(-100);
       expect(result.status).toBe(betStatus.LOST);
@@ -150,7 +162,9 @@ describe('BetsService', () => {
       mockBetsRepository.findOneBy.mockResolvedValue(null);
 
       await expect(
-        service.update('missing-id', mockUser.id, { status: betStatus.PENDING }),
+        service.update('missing-id', mockUser.id, {
+          status: betStatus.PENDING,
+        }),
       ).rejects.toThrow('Bet is missing');
       expect(mockBetsRepository.save).not.toHaveBeenCalled();
     });
@@ -192,9 +206,9 @@ describe('BetsService', () => {
       const result = [mockBet];
       mockBetsRepository.find.mockResolvedValue(result);
 
-      await expect(service.findAll(mockUser.id, 10, 2, betStatus.WON)).resolves.toEqual(
-        result,
-      );
+      await expect(
+        service.findAll(mockUser.id, 10, 2, betStatus.WON),
+      ).resolves.toEqual(result);
       expect(mockBetsRepository.find).toHaveBeenCalledWith({
         where: { user: { id: mockUser.id }, status: betStatus.WON },
         take: 10,
