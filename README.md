@@ -85,7 +85,6 @@ src
 │
 ├── enum
 │   ├── assetType.enum.ts
-│   ├── betStatus.enum.ts
 │   └── transactionStatus.enum.ts
 │   └── role.enum.ts
 │
