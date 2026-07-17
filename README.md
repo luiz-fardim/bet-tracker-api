@@ -153,10 +153,10 @@ Cada transação possui:
 ## 🌐 Deploy
 
 A API está disponível em produção:
-https://bet-tracker-api-ynry.onrender.com/
+https://investment-tracker-api-9xxn.onrender.com
 
 Documentação Swagger:
-https://bet-tracker-api-ynry.onrender.com/api
+https://investment-tracker-api-9xxn.onrender.com/api
 
 ## ⚙️ Como executar
 
