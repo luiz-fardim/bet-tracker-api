@@ -1,21 +1,21 @@
 import { Module } from '@nestjs/common';
-import { BetsModule } from './bets/bets.module';
+import { TransactionsModule } from './transactions/transactions.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { LoggerModule } from 'nestjs-pino'
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
     LoggerModule.forRoot({
       pinoHttp: {
         transport: {
-          target: 'pino-pretty'
-        }
-      }
+          target: 'pino-pretty',
+        },
+      },
     }),
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
@@ -28,7 +28,7 @@ import { LoggerModule } from 'nestjs-pino'
         autoLoadEntities: true,
       }),
     }),
-    BetsModule,
+    TransactionsModule,
     UsersModule,
     AuthModule,
     ThrottlerModule.forRoot({

@@ -1,4 +1,4 @@
-import { Bet } from 'src/bets/entities/bet.entity';
+import { Transaction } from 'src/transactions/entities/transaction.entity';
 import { Role } from 'src/enum/role.enum';
 import {
   Column,
@@ -35,6 +35,8 @@ export class User {
   })
   role: Role;
 
-  @OneToMany(() => Bet, (bet) => bet.user, { cascade: true })
-  bets: Bet[];
+  @OneToMany(() => Transaction, (transaction) => transaction.user, {
+    cascade: true,
+  })
+  transactions: Transaction[];
 }

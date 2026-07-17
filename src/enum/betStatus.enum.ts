@@ -1,5 +1,1 @@
-export enum betStatus {
-  PENDING = 'pending',
-  WON = 'won',
-  LOST = 'lost',
-}
+export { TransactionStatusEnum as betStatus } from './transactionStatus.enum';

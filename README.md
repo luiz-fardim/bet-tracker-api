@@ -1,4 +1,4 @@
-# 🎯 Bet Tracker API
+# 🎯 Investment Tracker API
 
 <p align="center">
 
@@ -14,20 +14,20 @@
 </p>
 
 <p align="center">
-  <strong>API REST para gerenciamento e organização de apostas esportivas</strong>, construída com NestJS, TypeORM e PostgreSQL.
+  <strong>API REST para gerenciamento e organização de investimentos pessoais</strong>, construída com NestJS, TypeORM e PostgreSQL.
 </p>
 
 <p align="center">
-  <i>Um projeto que começou pequeno — pra ajudar meu pai a organizar as apostas dele — e que hoje eu quero transformar em algo que possa ajudar outras pessoas também. 🚀</i>
+  <i>Uma API para registrar operações de compra e venda, calcular lucro/prejuízo e acompanhar o desempenho do portfólio em tempo real. 🚀</i>
 </p>
 
 ---
 
 ## 💡 Sobre o projeto
 
-O **Bet Tracker** nasceu de um problema real: meu pai fazia apostas esportivas e não tinha nenhum controle sobre quanto ganhava, quanto perdia, ou se estava realmente saindo no lucro. Criei essa API pra resolver isso — registrar apostas, calcular lucro/prejuízo automaticamente e dar uma visão clara do desempenho ao longo do tempo.
+O **Investment Tracker** nasceu da necessidade de organizar operações financeiras com clareza e segurança. A API permite registrar investimentos, calcular lucro/prejuízo automaticamente e ter uma visão clara do desempenho ao longo do tempo.
 
-O que começou como uma ferramenta simples está crescendo pra virar um produto completo, com autenticação, múltiplos usuários e, em breve, um front-end com dashboard e gráficos.
+O que começou como uma ferramenta simples está crescendo para se tornar um produto completo, com autenticação, múltiplos usuários e, em breve, um front-end com dashboard e gráficos.
 
 ---
 
@@ -63,12 +63,12 @@ src
 │   ├── auth.service.ts
 │   └── auth.module.ts
 │
-├── bets
+├── transactions
 │   ├── dto
 │   ├── entities
-│   ├── bets.controller.ts
-│   ├── bets.service.ts
-│   └── bets.module.ts
+│   ├── transactions.controller.ts
+│   ├── transactions.service.ts
+│   └── transactions.module.ts
 │
 ├── guards
 │   ├── auth
@@ -84,7 +84,9 @@ src
 │   └── users.service.ts
 │
 ├── enum
+│   ├── assetType.enum.ts
 │   ├── betStatus.enum.ts
+│   └── transactionStatus.enum.ts
 │   └── role.enum.ts
 │
 ├── app.module.ts
@@ -100,17 +102,17 @@ src
 - ✅ Login com JWT
 - ✅ Proteção de rotas com Guards
 - ✅ RBAC — controle de acesso por roles (admin/user)
-- ✅ Relação usuário → apostas (cada usuário vê só as próprias apostas)
+- ✅ Relação usuário → transactions (cada usuário vê só as suas próprias operações)
 
-### 🎲 Apostas
-- ✅ Cadastro de apostas
-- ✅ Listagem paginada das apostas do usuário autenticado
-- ✅ Filtro por status (pending, won, lost)
+### 📈 Transactions
+- ✅ Cadastro de operações de investimento
+- ✅ Listagem paginada das operações do usuário autenticado
+- ✅ Filtro por status (OPEN, CLOSED)
 - ✅ Busca por ID
-- ✅ Atualização do resultado da aposta
-- ✅ Remoção de apostas
+- ✅ Atualização do status e preço de venda
+- ✅ Remoção de operações
 - ✅ Cálculo automático de lucro/prejuízo
-- ✅ Resumo do lucro total acumulado
+- ✅ Resumo de investimento total e ROI
 - ✅ Validação global de dados
 
 ### 📄 Documentação
@@ -121,29 +123,30 @@ src
 
 ## 📊 Regras de Negócio
 
-Cada aposta possui:
+Cada transação possui:
 
-- Time da casa
-- Time visitante
-- Mercado
-- Odd
-- Valor apostado
+- Nome do ativo
+- Tipo do ativo
+- Corretora/operação
+- Quantidade
+- Preço de compra
+- Preço de venda (quando fechado)
+- Taxas
 - Status
 
-### Resultado da aposta
+### Resultado da operação
 
-| Status    | Resultado                       |
-| --------- | -------------------------------- |
-| `pending` | Aguardando resultado             |
-| `won`     | Lucro = `(odd × valor) - valor`  |
-| `lost`    | Prejuízo = `-valor`              |
+| Status    | Resultado |
+| --------- | --------- |
+| `OPEN`    | Aguardando fechamento |
+| `CLOSED`  | Lucro = `(sellPrice - buyPrice) × quantity - fees` |
 
 ### Roles de usuário
 
 | Role    | Permissões                          |
 | ------- | ------------------------------------ |
-| `user`  | CRUD nas próprias apostas            |
-| `admin` | Acesso a recursos administrativos    |
+| `user`  | CRUD nas próprias transactions        |
+| `admin` | Acesso a recursos administrativos      |
 
 ---
 
@@ -225,16 +228,16 @@ http://localhost:3000/api
 | POST   | `/auth/register`  | Criar conta de usuário    |
 | POST   | `/auth/login`     | Login e geração de token  |
 
-### Apostas — requer autenticação
+### Transactions — requer autenticação
 
 | Método | Endpoint        | Descrição                                        |
 | ------ | --------------- | ------------------------------------------------- |
-| POST   | `/bets`         | Criar aposta                                      |
-| GET    | `/bets`         | Listar apostas com paginação e filtro por status  |
-| GET    | `/bets/summary` | Retorna o lucro total acumulado                   |
-| GET    | `/bets/:id`     | Buscar aposta por ID                              |
-| PATCH  | `/bets/:id`     | Atualizar resultado da aposta                     |
-| DELETE | `/bets/:id`     | Remover aposta                                    |
+| POST   | `/transactions`         | Criar uma operação de investimento |
+| GET    | `/transactions`         | Listar operações com paginação e filtro por status |
+| GET    | `/transactions/summary` | Retorna investimento total, lucro e ROI |
+| GET    | `/transactions/:id`     | Buscar operação por ID |
+| PATCH  | `/transactions/:id`     | Atualizar status/preço de venda da operação |
+| DELETE | `/transactions/:id`     | Remover operação |
 
 ### Usuários — requer autenticação
 
@@ -250,30 +253,32 @@ http://localhost:3000/api
 ## 📥 Exemplo de criação
 
 ```http
-POST /bets
+POST /transactions
 Authorization: Bearer <token>
 ```
 
 ```json
 {
-  "homeTeam": "Flamengo",
-  "visitingTeam": "Corinthians",
-  "market": "Resultado Final",
-  "odd": 2.5,
-  "value": 50
+  "assetName": "PETR4",
+  "assetType": "STOCK",
+  "broker": "Nubank",
+  "quantity": 10,
+  "buyPrice": 20.5,
+  "fees": 0
 }
 ```
 
 ## 📤 Exemplo de atualização
 
 ```http
-PATCH /bets/:id
+PATCH /transactions/:id
 Authorization: Bearer <token>
 ```
 
 ```json
 {
-  "status": "won"
+  "status": "CLOSED",
+  "sellPrice": 23.0
 }
 ```
 
@@ -282,14 +287,17 @@ Authorization: Bearer <token>
 ```json
 {
   "id": "221cf8df-8584-4c45-a09e-214e7d684d61",
-  "homeTeam": "Flamengo",
-  "visitingTeam": "Corinthians",
-  "market": "Resultado Final",
-  "odd": 2.5,
-  "value": 50,
-  "status": "won",
-  "profit": 75.00,
-  "createdAt": "2026-06-25T22:35:01.533Z"
+  "assetName": "PETR4",
+  "assetType": "STOCK",
+  "broker": "Nubank",
+  "quantity": 10,
+  "buyPrice": 20.5,
+  "sellPrice": 23.0,
+  "fees": 0,
+  "status": "CLOSED",
+  "profit": 25.0,
+  "createdAt": "2026-06-25T22:35:01.533Z",
+  "updatedAt": "2026-06-25T22:35:01.533Z"
 }
 ```
 
@@ -309,10 +317,10 @@ Authorization: Bearer <token>
 - [ ] Export CSV e PDF
 
 ### 🔗 Integrações
-- [ ] API-Football — times, competições e resultados em tempo real
-- [ ] Atualização automática do resultado quando o jogo terminar
+- [ ] API de cotações em tempo real
+- [ ] Atualização automática do preço de fechamento
 - [ ] BullMQ + Redis — filas para notificações e relatórios
-- [ ] Telegram Bot — notificar quando aposta for ganha ou perdida
+- [ ] Telegram Bot — notificar quando uma operação fechar com lucro ou prejuízo
 - [ ] Nodemailer — resumo semanal por email
 
 ### 💻 Front-end
@@ -344,6 +352,6 @@ Este projeto está sob a licença **MIT**.
 
 ## 👨‍💻 Autor
 
-Desenvolvido por **Luiz**, durante os estudos de Backend com **NestJS**, **PostgreSQL**, **Docker** e boas práticas de desenvolvimento — e com o objetivo real de ajudar meu pai (e, no futuro, outras pessoas) a ter mais controle sobre suas apostas.
+Desenvolvido por **Luiz**, durante os estudos de Backend com **NestJS**, **PostgreSQL**, **Docker** e boas práticas de desenvolvimento — com o objetivo de ajudar pessoas a ter mais controle sobre seus investimentos.
 
 Sugestões, ideias ou vontade de contribuir? Fique à vontade para abrir uma **Issue** ou enviar um **Pull Request**. 🚀

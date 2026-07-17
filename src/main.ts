@@ -8,7 +8,7 @@ import { Logger } from 'nestjs-pino';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
 
-  app.useLogger(app.get(Logger))
+  app.useLogger(app.get(Logger));
 
   app.enableCors({
     origin: '*',
@@ -22,9 +22,9 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Bet Tracker API')
+    .setTitle('Investment Tracker API')
     .setDescription(
-      'A REST API for managing, recording, and analyzing sports bets. Register your bets, track results, and monitor your profit/loss automatically.  ',
+      'A REST API for managing personal investment operations, recording purchases and sales, calculating profit/loss, and tracking portfolio performance over time.',
     )
     .setVersion('1.0')
     .build();

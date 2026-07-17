@@ -1,7 +1,7 @@
 {
-  "name": "bets-tracker",
+  "name": "investment-tracker",
   "version": "0.0.1",
-  "description": "",
+  "description": "Investment Tracker API built with NestJS, TypeORM and PostgreSQL",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
